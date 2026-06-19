@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ciberseguridad e Inclusión Digital · Chile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════════════
+     BASE.CSS  — tokens, reset, layout, dark mode
+     ══════════════════════════════════════════ -->
+<style>
+/* ── LIGHT TOKENS ── */
+:root {
+  --navy:         #0f2545;
+  --blue:         #1a3a6e;
+  --blue-mid:     #2351a0;
+  --blue-light:   #dbeafe;
+  --gold:         #f0a500;
+  --gold-light:   #fef3c7;
+  --surface:      #f5f7fb;
+  --card:         #ffffff;
+  --border:       #e2e8f0;
+  --text:         #0f172a;
+  --text-body:    #334155;
+  --muted:        #475569;
+  --subtle:       #64748b;
+  --red:          #dc2626;
+  --red-light:    #fee2e2;
+  --green:        #15803d;
+  --green-light:  #dcfce7;
+  --sidebar-bg:   #0f2545;
+  --sidebar-text: rgba(255,255,255,.6);
+  --sidebar-head: #ffffff;
+  --radius-sm:    10px;
+  --radius:       16px;
+  --radius-lg:    24px;
+  --shadow-sm:    0 1px 3px rgba(15,37,69,.08), 0 1px 2px rgba(15,37,69,.05);
+  --shadow:       0 4px 16px rgba(15,37,69,.11), 0 1px 4px rgba(15,37,69,.06);
+  --shadow-lg:    0 12px 40px rgba(15,37,69,.14), 0 4px 12px rgba(15,37,69,.08);
+  --transition:   220ms cubic-bezier(.4,0,.2,1);
+  --read-progress:0%;
+}
+
+/* ── DARK TOKENS ── */
+[data-theme="dark"] {
+  --surface:      #0d1117;
+  --card:         #161b22;
+  --border:       #30363d;
+  --text:         #e6edf3;
+  --text-body:    #c9d1d9;
+  --muted:        #8b949e;
+  --subtle:       #6e7681;
+  --blue-light:   #1d3557;
+  --gold-light:   #2d2000;
+  --red-light:    #3a0d0d;
+  --green-light:  #0d2b1a;
+  --sidebar-bg:   #010409;
+  --sidebar-text: rgba(255,255,255,.5);
+  --sidebar-head: #e6edf3;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,.3);
+  --shadow:       0 4px 16px rgba(0,0,0,.4);
+  --shadow-lg:    0 12px 40px rgba(0,0,0,.5);
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── FOCUS VISIBLE (accessibility) ── */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── READING PROGRESS BAR ── */
+#read-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--read-progress);
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), #f59e0b);
+  z-index: 9999;
+  transition: width .1s linear;
+  pointer-events: none;
+}
+
+/* ── LAYOUT ── */
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── SKIP LINK (accessibility) ── */
+.skip-link {
+  position: absolute;
+  top: -999px; left: 1rem;
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 700;
+  padding: .5rem 1rem;
+  border-radius: var(--radius-sm);
+  z-index: 99999;
+  text-decoration: none;
+  font-size: .875rem;
+}
+.skip-link:focus { top: .75rem; }
+</style>
+
+<!-- ══════════════════════════════════════════
+     COMPONENTS.CSS  — sidebar, cards, tips, bib, etc.
+     ══════════════════════════════════════════ -->
+<style>
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 268px;
+  flex-shrink: 0;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  transition: background var(--transition);
+}
+
+.sidebar-brand {
+  padding: 1.75rem 1.5rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.brand-icon {
+  width: 44px; height: 44px;
+  background: var(--gold);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: .65rem;
+}
+
+.sidebar-brand h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--sidebar-head);
+  line-height: 1.3;
+  margin-bottom: .2rem;
+}
+
+.sidebar-brand p {
+  font-size: .68rem;
+  color: var(--sidebar-text);
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ── SEARCH ── */
+.sidebar-search {
+  padding: .9rem 1.1rem .6rem;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-wrap .search-icon {
+  position: absolute;
+  left: .6rem;
+  font-size: .85rem;
+  pointer-events: none;
+  color: rgba(255,255,255,.35);
+}
+
+#globalSearch {
+  width: 100%;
+  padding: .5rem .75rem .5rem 2rem;
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius-sm);
+  color: rgba(255,255,255,.9);
+  font-size: .8rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+#globalSearch::placeholder { color: rgba(255,255,255,.3); }
+#globalSearch:focus { outline: none; border-color: var(--gold); background: rgba(255,255,255,.1); }
+
+#searchResults {
+  position: absolute;
+  top: calc(100% + .5rem);
+  left: 1.1rem; right: 1.1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  max-height: 280px;
+  overflow-y: auto;
+  display: none;
+}
+
+.sr-item {
+  display: flex;
+  flex-direction: column;
+  gap: .1rem;
+  padding: .65rem .9rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+.sr-item:last-child { border-bottom: none; }
+.sr-item:hover { background: var(--surface); }
+.sr-item .sr-section { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--blue-mid); }
+.sr-item .sr-title   { font-size: .82rem; font-weight: 600; color: var(--text); }
+.sr-item .sr-snippet { font-size: .75rem; color: var(--muted); line-height: 1.4; }
+mark { background: var(--gold-light); color: var(--navy); border-radius: 2px; padding: 0 2px; }
+
+/* ── SIDEBAR NAV ── */
+.sidebar-nav { padding: .75rem 0; flex: 1; }
+
+.nav-group-label {
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.28);
+  padding: .6rem 1.5rem .2rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  padding: .65rem 1.4rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  color: var(--sidebar-text);
+  font-size: .85rem;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  border-left: 3px solid transparent;
+  transition: color var(--transition), background var(--transition), border-color var(--transition);
+  position: relative;
+}
+
+.nav-item:hover { color: rgba(255,255,255,.92); background: rgba(255,255,255,.06); }
+
+.nav-item.active {
+  color: var(--gold);
+  background: rgba(240,165,0,.09);
+  border-left-color: var(--gold);
+}
+
+.nav-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+
+/* ── SIDEBAR FOOTER ── */
+.sidebar-footer {
+  padding: .9rem 1.4rem;
+  border-top: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+}
+
+.sidebar-footer span {
+  font-size: .68rem;
+  color: rgba(255,255,255,.22);
+  line-height: 1.4;
+}
+
+/* ── DARK MODE TOGGLE ── */
+#darkToggle {
+  flex-shrink: 0;
+  width: 36px; height: 20px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 99px;
+  cursor: pointer;
+  position: relative;
+  transition: background var(--transition);
+}
+
+#darkToggle::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 14px; height: 14px;
+  background: rgba(255,255,255,.7);
+  border-radius: 50%;
+  transition: transform var(--transition), background var(--transition);
+}
+
+[data-theme="dark"] #darkToggle {
+  background: rgba(240,165,0,.3);
+  border-color: var(--gold);
+}
+
+[data-theme="dark"] #darkToggle::after {
+  transform: translateX(16px);
+  background: var(--gold);
+}
+
+.toggle-label {
+  font-size: .68rem;
+  color: rgba(255,255,255,.3);
+}
+
+/* ── MAIN ── */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+/* ── MOBILE TOPBAR ── */
+.topbar {
+  display: none;
+  background: var(--sidebar-bg);
+  padding: .85rem 1rem;
+  align-items: center;
+  gap: .75rem;
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.topbar-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: .95rem;
+  color: #fff;
+  flex: 1;
+}
+
+.topbar-actions { display: flex; gap: .5rem; align-items: center; }
+
+.mobile-tabs {
+  display: none;
+  overflow-x: auto;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+  position: sticky; top: 49px; z-index: 99;
+}
+
+.mobile-tabs::-webkit-scrollbar { display: none; }
+
+.mobile-tabs .nav-item {
+  color: var(--muted);
+  border-left: none;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  padding: .7rem .9rem;
+  flex-shrink: 0;
+}
+
+.mobile-tabs .nav-item.active {
+  color: var(--blue);
+  background: none;
+  border-bottom-color: var(--blue);
+}
+
+/* ── PAGES ── */
+.page { flex: 1; padding: 2rem; display: none; max-width: 860px; }
+.page.active { display: block; }
+
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 1.75rem; }
+
+.eyebrow {
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--blue-mid); margin-bottom: .35rem;
+}
+
+.page-header h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.75rem; color: var(--text);
+  line-height: 1.2; margin-bottom: .45rem;
+}
+
+.page-header p { color: var(--muted); font-size: .88rem; max-width: 520px; }
+
+/* ── STAT GRID ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .9rem;
+  margin-bottom: 1.25rem;
+}
+
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  position: relative; overflow: hidden;
+  transition: box-shadow var(--transition);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px; background: var(--gold);
+}
+
+.stat-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.1rem; color: var(--text);
+  display: block; line-height: 1; margin-bottom: .35rem;
+}
+
+.stat-label { font-size: .73rem; color: var(--muted); line-height: 1.4; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.2rem 1.4rem;
+  margin-bottom: .9rem;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+
+.card h3 { font-weight: 600; font-size: .95rem; color: var(--text); margin-bottom: .45rem; }
+
+.card p, .card li {
+  font-size: .85rem; color: var(--text-body); line-height: 1.65;
+}
+
+.card ul { padding-left: 1rem; }
+.card li { margin-bottom: .3rem; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-bottom: .9rem; }
+.two-col .card { margin-bottom: 0; }
+
+/* ── BADGES ── */
+.badge {
+  display: inline-flex; align-items: center; gap: .25rem;
+  padding: .22rem .65rem;
+  border-radius: 99px;
+  font-size: .67rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase;
+  margin-bottom: .55rem;
+}
+
+.badge.blue   { background: var(--blue-light); color: var(--blue-mid); }
+.badge.yellow { background: var(--gold-light); color: #92400e; }
+.badge.green  { background: var(--green-light); color: var(--green); }
+.badge.red    { background: var(--red-light); color: var(--red); }
+
+/* ── CONCEPT COMPARE ── */
+.concept-compare { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-top: .7rem; }
+
+.compare-block { border-radius: var(--radius-sm); padding: .9rem; }
+.compare-block.a { background: var(--blue-light); border: 1px solid #bfdbfe; }
+.compare-block.b { background: var(--green-light); border: 1px solid #bbf7d0; }
+
+.compare-block strong { display: block; font-size: .78rem; font-weight: 700; margin-bottom: .35rem; }
+.compare-block.a strong { color: var(--blue); }
+.compare-block.b strong { color: var(--green); }
+.compare-block p { font-size: .78rem; line-height: 1.55; }
+.compare-block.a p { color: #1e40af; }
+.compare-block.b p { color: #166534; }
+
+/* ── ALERT CARD ── */
+.alert-card {
+  display: flex; align-items: flex-start; gap: .7rem;
+  background: #fff7ed; border: 1px solid #fed7aa;
+  border-radius: var(--radius); padding: .9rem 1.1rem;
+  margin-bottom: .9rem;
+}
+
+[data-theme="dark"] .alert-card { background: #2d1500; border-color: #92400e; }
+
+.alert-card .alert-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: .05rem; }
+.alert-card h4 { font-size: .875rem; font-weight: 600; color: #92400e; margin-bottom: .2rem; }
+.alert-card p  { font-size: .8rem; color: #b45309; }
+[data-theme="dark"] .alert-card h4 { color: #fbbf24; }
+[data-theme="dark"] .alert-card p  { color: #fcd34d; }
+
+/* ── SIGNAL LIST ── */
+.signal-list { list-style: none; padding: 0; }
+
+.signal-list li {
+  display: flex; align-items: center; gap: .7rem;
+  padding: .6rem .85rem;
+  border-radius: var(--radius-sm);
+  font-size: .85rem; color: var(--text-body);
+  transition: background var(--transition);
+  border: 1px solid transparent;
+}
+
+.signal-list li:hover { background: #fff7ed; border-color: #fed7aa; }
+[data-theme="dark"] .signal-list li:hover { background: #2d1500; border-color: #92400e; }
+
+.signal-list li::before { content: '⚠'; font-size: .82rem; color: #f59e0b; flex-shrink: 0; }
+
+/* ── FACTOR ROWS ── */
+.factor {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: .95rem 1.2rem;
+  margin-bottom: .7rem; box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition);
+}
+
+.factor:hover { box-shadow: var(--shadow); }
+
+.factor-head { display: flex; align-items: center; gap: .7rem; margin-bottom: .55rem; }
+
+.factor-icon-wrap {
+  width: 36px; height: 36px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+
+.factor-meta { flex: 1; }
+.factor-meta strong { display: block; font-size: .875rem; font-weight: 600; color: var(--text); }
+.factor-meta span   { font-size: .76rem; color: var(--muted); }
+.factor-pct { font-family: 'DM Serif Display', serif; font-size: 1.2rem; color: var(--blue-mid); }
+
+.bar-track { height: 6px; background: var(--surface); border-radius: 99px; overflow: hidden; border: 1px solid var(--border); }
+.bar-fill  { height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-mid)); border-radius: 99px; transition: width 1s cubic-bezier(.4,0,.2,1); width: 0; }
+
+/* ── TIP CARDS ── */
+.tip-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: .95rem 1.2rem;
+  margin-bottom: .7rem; display: flex; gap: .9rem; align-items: flex-start;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.tip-card:hover { box-shadow: var(--shadow); transform: translateX(3px); }
+
+.tip-icon-wrap {
+  width: 40px; height: 40px; background: var(--navy);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem; flex-shrink: 0;
+}
+
+[data-theme="dark"] .tip-icon-wrap { background: #1a3a6e; }
+
+.tip-body strong { display: block; font-size: .88rem; font-weight: 600; color: var(--text); margin-bottom: .25rem; }
+.tip-body p      { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+
+/* ── BIBLIOGRAPHY ── */
+.bib-section { margin-bottom: 1.75rem; }
+
+.bib-section-title {
+  font-size: .68rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--subtle); margin-bottom: .7rem;
+  padding-bottom: .55rem; border-bottom: 1px solid var(--border);
+}
+
+.bib-item {
+  display: flex; align-items: flex-start; gap: .85rem;
+  padding: .9rem 1rem; background: var(--card);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  margin-bottom: .55rem; box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.bib-item:hover { box-shadow: var(--shadow); border-color: #94a3b8; }
+
+.bib-num { font-size: .7rem; font-weight: 700; color: var(--subtle); min-width: 20px; margin-top: 3px; }
+
+.bib-type-icon {
+  width: 32px; height: 32px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .95rem; flex-shrink: 0;
+}
+
+.bib-type-icon.stat  { background: var(--blue-light); }
+.bib-type-icon.cyber { background: var(--red-light); }
+.bib-type-icon.prog  { background: var(--green-light); }
+.bib-type-icon.base  { background: #ede9fe; }
+[data-theme="dark"] .bib-type-icon.base { background: #2e1065; }
+
+.bib-content { flex: 1; min-width: 0; }
+.bib-title { font-size: .85rem; font-weight: 600; color: var(--text); margin-bottom: .18rem; line-height: 1.4; }
+.bib-meta  { font-size: .73rem; color: var(--muted); margin-bottom: .38rem; }
+
+.bib-tags { display: flex; flex-wrap: wrap; gap: .28rem; margin-bottom: .38rem; }
+
+.bib-tag {
+  font-size: .62rem; font-weight: 700;
+  padding: .13rem .52rem; border-radius: 99px;
+  letter-spacing: .04em; text-transform: uppercase;
+}
+
+.tag-stat  { background: var(--blue-light); color: var(--blue); }
+.tag-cyber { background: var(--red-light);  color: var(--red); }
+.tag-prog  { background: var(--green-light); color: var(--green); }
+.tag-base  { background: #ede9fe; color: #5b21b6; }
+.tag-year  { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
+[data-theme="dark"] .tag-base { background: #2e1065; color: #c4b5fd; }
+
+.bib-link {
+  font-size: .73rem; color: var(--blue-mid); text-decoration: none;
+  word-break: break-all;
+}
+
+.bib-link:hover { text-decoration: underline; }
+.bib-link::after { content: ' ↗'; font-size: .62rem; }
+
+/* ── LEARNED SECTION ── */
+.learned-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: .8rem; margin-bottom: 1.1rem;
+}
+
+.learned-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem 1.1rem;
+  display: flex; align-items: flex-start; gap: .7rem;
+  cursor: pointer;
+  transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+  position: relative;
+}
+
+.learned-card:hover { box-shadow: var(--shadow); border-color: var(--gold); transform: translateY(-1px); }
+
+.learned-card input[type="checkbox"] {
+  position: absolute; opacity: 0; pointer-events: none;
+}
+
+.learned-check {
+  width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+  border: 2px solid var(--border); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; transition: background var(--transition), border-color var(--transition);
+}
+
+.learned-card.checked .learned-check {
+  background: var(--green); border-color: var(--green); color: #fff;
+}
+
+.learned-card.checked { border-color: var(--green); }
+.learned-card.checked .learned-text strong { text-decoration: line-through; color: var(--muted); }
+
+.learned-text strong { display: block; font-size: .85rem; font-weight: 600; color: var(--text); margin-bottom: .15rem; }
+.learned-text span   { font-size: .76rem; color: var(--muted); line-height: 1.45; }
+
+.learned-summary {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1rem 1.2rem;
+  display: flex; align-items: center; gap: .9rem;
+}
+
+.learned-count {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2rem; color: var(--text); line-height: 1;
+}
+
+.learned-summary p { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+.learned-summary strong { color: var(--text); }
+
+.progress-ring {
+  width: 52px; height: 52px; flex-shrink: 0;
+}
+</style>
+
+<!-- ══════════════════════════════════════════
+     QUIZ.CSS
+     ══════════════════════════════════════════ -->
+<style>
+.quiz-wrap { max-width: 680px; }
+
+.quiz-progress-bar {
+  height: 4px; background: var(--border); border-radius: 99px;
+  margin-bottom: 1.5rem; overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%; background: var(--gold); border-radius: 99px;
+  transition: width .4s cubic-bezier(.4,0,.2,1);
+}
+
+.quiz-counter {
+  font-size: .73rem; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .07em; margin-bottom: .65rem;
+}
+
+.quiz-q {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem; color: var(--text);
+  line-height: 1.4; margin-bottom: 1.1rem;
+}
+
+.quiz-opts { display: flex; flex-direction: column; gap: .45rem; margin-bottom: .9rem; }
+
+.opt-btn {
+  display: flex; align-items: center; gap: .7rem;
+  width: 100%; padding: .85rem 1rem;
+  border-radius: var(--radius); border: 1.5px solid var(--border);
+  background: var(--card); cursor: pointer; text-align: left;
+  font-size: .85rem; font-family: 'Inter', sans-serif;
+  color: var(--text); font-weight: 500;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.opt-btn:hover:not([disabled]) { border-color: var(--blue-mid); background: var(--blue-light); transform: translateX(3px); }
+.opt-btn:disabled { cursor: default; }
+
+.opt-letter {
+  width: 24px; height: 24px; border-radius: 7px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .7rem; font-weight: 700; flex-shrink: 0; color: var(--muted);
+  transition: background var(--transition), border-color var(--transition), color var(--transition);
+}
+
+.opt-btn.correct { background: var(--green-light); border-color: #22c55e; color: #166534; font-weight: 600; }
+.opt-btn.correct .opt-letter { background: #22c55e; border-color: #22c55e; color: #fff; }
+.opt-btn.wrong   { background: var(--red-light); border-color: var(--red); color: #991b1b; }
+.opt-btn.wrong   .opt-letter { background: var(--red); border-color: var(--red); color: #fff; }
+
+.quiz-feedback {
+  border-radius: var(--radius); padding: .85rem 1rem;
+  font-size: .82rem; line-height: 1.6; display: none; margin-bottom: .9rem;
+}
+
+.quiz-feedback.show { display: block; }
+.quiz-feedback.ok   { background: var(--green-light); color: #166534; border: 1px solid #bbf7d0; }
+.quiz-feedback.no   { background: var(--red-light);   color: #991b1b; border: 1px solid #fecaca; }
+.fb-head { font-weight: 700; margin-bottom: .2rem; }
+
+.quiz-nav {
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+/* ── SCORE ── */
+.score-screen {
+  text-align: center; padding: 2.5rem 1.5rem;
+  background: var(--card); border-radius: var(--radius-lg);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+}
+
+.score-big {
+  font-family: 'DM Serif Display', serif;
+  font-size: 4.5rem; color: var(--text); line-height: 1; margin-bottom: .2rem;
+}
+
+.score-denom  { font-size: .95rem; color: var(--muted); margin-bottom: .6rem; }
+.score-msg    { font-size: 1rem; color: var(--text); margin-bottom: 1.4rem; font-weight: 500; }
+.score-stars  { font-size: 1.5rem; margin-bottom: 1.4rem; letter-spacing: .12em; }
+
+/* ── SHARED BUTTONS ── */
+.btn-primary {
+  padding: .6rem 1.3rem; border: none;
+  background: var(--navy); color: #fff;
+  border-radius: var(--radius-sm); cursor: pointer;
+  font-size: .85rem; font-weight: 600; font-family: 'Inter', sans-serif;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.btn-primary:hover { background: var(--blue-mid); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: .35; cursor: default; transform: none; }
+
+.btn-ghost {
+  padding: .6rem 1.3rem; border: 1.5px solid var(--border);
+  background: transparent; color: var(--muted);
+  border-radius: var(--radius-sm); cursor: pointer;
+  font-size: .85rem; font-weight: 600; font-family: 'Inter', sans-serif;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.btn-ghost:hover { border-color: var(--navy); color: var(--text); }
+</style>
+
+<!-- ══════════════════════════════════════════
+     ANIMATIONS + RESPONSIVE
+     ══════════════════════════════════════════ -->
+<style>
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page.active > * {
+  animation: fadeUp .28s ease both;
+}
+
+.page.active > *:nth-child(1) { animation-delay: .02s; }
+.page.active > *:nth-child(2) { animation-delay: .06s; }
+.page.active > *:nth-child(3) { animation-delay: .10s; }
+.page.active > *:nth-child(4) { animation-delay: .14s; }
+.page.active > *:nth-child(5) { animation-delay: .18s; }
+.page.active > *:nth-child(6) { animation-delay: .22s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page.active > * { animation: none; }
+  .bar-fill { transition: none; }
+  .btn-primary:hover, .btn-ghost:hover { transform: none; }
+}
+
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .topbar, .mobile-tabs { display: flex; }
+  .page { padding: 1.1rem; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .stat-grid .stat-card:last-child { grid-column: span 2; }
+  .two-col, .concept-compare, .learned-grid { grid-template-columns: 1fr; }
+  .quiz-q { font-size: 1.05rem; }
+  .score-big { font-size: 3.2rem; }
+  .page-header h2 { font-size: 1.35rem; }
+}
+
+@media (max-width: 480px) {
+  .stat-grid { grid-template-columns: 1fr; }
+  .stat-grid .stat-card:last-child { grid-column: span 1; }
+}
+</style>
+</head>
+
+<body>
+<!-- Skip link for keyboard users -->
+<a class="skip-link" href="#main-content">Saltar al contenido</a>
+
+<!-- Reading progress bar -->
+<div id="read-progress" role="progressbar" aria-label="Progreso de lectura" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<div class="shell">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" aria-label="Navegación principal">
+    <div class="sidebar-brand">
+      <div class="brand-icon" aria-hidden="true">🛡️</div>
+      <h1>Ciberseguridad e Inclusión Digital</h1>
+      <p>Adultos mayores · Chile</p>
+    </div>
+
+    <!-- Buscador interno -->
+    <div class="sidebar-search" role="search">
+      <div class="search-wrap">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <label for="globalSearch" class="skip-link">Buscar en el contenido</label>
+        <input
+          type="search"
+          id="globalSearch"
+          placeholder="Buscar en el contenido…"
+          aria-label="Buscar en el contenido"
+          autocomplete="off"
+        >
+      </div>
+      <div id="searchResults" role="listbox" aria-label="Resultados de búsqueda"></div>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Secciones del sitio">
+      <p class="nav-group-label" aria-hidden="true">Contenido</p>
+      <button class="nav-item active" data-tab="0" aria-current="page" aria-label="Ir a Contexto">
+        <span class="nav-icon" aria-hidden="true">🏠</span> Contexto
+      </button>
+      <button class="nav-item" data-tab="1" aria-label="Ir a Conceptos">
+        <span class="nav-icon" aria-hidden="true">📖</span> Conceptos
+      </button>
+      <button class="nav-item" data-tab="2" aria-label="Ir a Problemas">
+        <span class="nav-icon" aria-hidden="true">⚠️</span> Problemas
+      </button>
+      <button class="nav-item" data-tab="3" aria-label="Ir a Factores">
+        <span class="nav-icon" aria-hidden="true">📊</span> Factores
+      </button>
+      <button class="nav-item" data-tab="4" aria-label="Ir a Consejos">
+        <span class="nav-icon" aria-hidden="true">💡</span> Consejos
+      </button>
+
+      <p class="nav-group-label" aria-hidden="true" style="margin-top:.6rem">Actividades</p>
+      <button class="nav-item" data-tab="5" aria-label="Ir al Quiz">
+        <span class="nav-icon" aria-hidden="true">🧠</span> Quiz
+      </button>
+      <button class="nav-item" data-tab="6" aria-label="Ir a ¿Qué aprendiste hoy?">
+        <span class="nav-icon" aria-hidden="true">✅</span> ¿Qué aprendiste?
+      </button>
+
+      <p class="nav-group-label" aria-hidden="true" style="margin-top:.6rem">Recursos</p>
+      <button class="nav-item" data-tab="7" aria-label="Ir a Bibliografía">
+        <span class="nav-icon" aria-hidden="true">📚</span> Bibliografía
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <span>Proyecto educativo · Chile</span>
+      <div style="display:flex;align-items:center;gap:.45rem;flex-shrink:0">
+        <span class="toggle-label" id="dark-label" aria-hidden="true">🌙</span>
+        <button
+          id="darkToggle"
+          role="switch"
+          aria-checked="false"
+          aria-label="Activar modo oscuro"
+          title="Modo oscuro"
+        ></button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <main class="main" id="main-content">
+
+    <!-- Mobile topbar -->
+    <header class="topbar" aria-label="Barra superior">
+      <span aria-hidden="true" style="font-size:1.4rem">🛡️</span>
+      <span class="topbar-title">Ciberseguridad e Inclusión Digital</span>
+      <div class="topbar-actions">
+        <button
+          id="darkToggleMobile"
+          role="switch"
+          aria-checked="false"
+          aria-label="Activar modo oscuro"
+          style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:#fff;"
+        >🌙</button>
+      </div>
+    </header>
+
+    <nav class="mobile-tabs" aria-label="Secciones (móvil)">
+      <button class="nav-item active" data-tab="0" aria-current="page">🏠 Contexto</button>
+      <button class="nav-item" data-tab="1">📖 Conceptos</button>
+      <button class="nav-item" data-tab="2">⚠️ Problemas</button>
+      <button class="nav-item" data-tab="3">📊 Factores</button>
+      <button class="nav-item" data-tab="4">💡 Consejos</button>
+      <button class="nav-item" data-tab="5">🧠 Quiz</button>
+      <button class="nav-item" data-tab="6">✅ Aprendizaje</button>
+      <button class="nav-item" data-tab="7">📚 Bibliografía</button>
+    </nav>
+
+    <!-- ════ PAGE 0: CONTEXTO ════ -->
+    <section class="page active" id="page-0" aria-labelledby="h2-contexto" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Chile · 2024–2025</p>
+        <h2 id="h2-contexto">La brecha digital en adultos mayores</h2>
+        <p>La transformación digital genera oportunidades, pero también nuevas barreras para quienes más lo necesitan.</p>
+      </header>
+
+      <div class="stat-grid" role="list" aria-label="Estadísticas principales">
+        <article class="stat-card" role="listitem">
+          <span class="stat-num" data-target="17" aria-live="polite">0</span><span aria-hidden="true">%</span>
+          <span class="stat-label">hace trámites digitales <strong>sin ayuda</strong></span>
+        </article>
+        <article class="stat-card" role="listitem">
+          <span class="stat-num" data-target="42" aria-live="polite">0</span><span aria-hidden="true">%</span>
+          <span class="stat-label">solo tiene habilidades <strong>básicas</strong> (65–74 años)</span>
+        </article>
+        <article class="stat-card" role="listitem">
+          <span class="stat-num" data-target="75" aria-live="polite">0</span><span aria-hidden="true">%</span>
+          <span class="stat-label">enfrenta <strong>barreras digitales</strong> significativas</span>
+        </article>
+      </div>
+
+      <article class="card">
+        <h3>¿Por qué importa?</h3>
+        <p>Servicios esenciales como salud, pensiones y trámites del Estado dependen cada vez más de internet. Quien no puede usarlos pierde acceso a derechos fundamentales. La alfabetización digital no es una comodidad: es una herramienta de inclusión social.</p>
+      </article>
+
+      <div class="two-col">
+        <article class="card">
+          <h3>🎯 Objetivo</h3>
+          <p>Promover la alfabetización en ciberseguridad para una inclusión digital más segura y autónoma en la población adulta mayor chilena.</p>
+        </article>
+        <article class="card">
+          <h3>👥 Población objetivo</h3>
+          <p>Adultos mayores de 60 años en Chile, con atención especial a quienes viven en zonas rurales y tienen acceso limitado a tecnología.</p>
+        </article>
+      </div>
+
+      <div class="alert-card" role="note">
+        <span class="alert-icon" aria-hidden="true">📌</span>
+        <div>
+          <h4>Solo la mitad tiene smartphone</h4>
+          <p>Según El Mostrador (2024), menos de la mitad de los adultos mayores chilenos cuenta con un teléfono inteligente, lo que agrava su exclusión del mundo digital.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ PAGE 1: CONCEPTOS ════ -->
+    <section class="page" id="page-1" aria-labelledby="h2-conceptos" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Glosario esencial</p>
+        <h2 id="h2-conceptos">Conceptos clave</h2>
+        <p>Términos fundamentales para entender la situación digital de los adultos mayores en Chile.</p>
+      </header>
+
+      <article class="card">
+        <span class="badge blue">Base</span>
+        <h3>Inclusión digital</h3>
+        <p>Garantizar que todas las personas puedan acceder y usar las tecnologías digitales de forma efectiva, reduciendo la brecha entre quienes tienen y no tienen acceso a dispositivos e internet. Es un principio de equidad social.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge blue">Base</span>
+        <h3>Alfabetización digital</h3>
+        <p>Proceso continuo de aprendizaje que permite el uso básico de dispositivos, aplicaciones e internet: encender un celular, enviar mensajes, buscar información. Es el primer paso para participar en el mundo digital. Solo el 17% de adultos mayores en Chile puede realizar trámites digitales sin ayuda.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge yellow">Avanzado</span>
+        <h3>Literacidad digital</h3>
+        <p>Capacidad para analizar, evaluar y usar críticamente la información en internet. Va más allá del uso técnico: implica cuestionar fuentes, detectar información falsa y ejercer juicio sobre el contenido digital. Entre adultos de 65–74 años, solo el 47,3% tiene habilidades digitales básicas o inferiores.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge green">Protección</span>
+        <h3>Ciberseguridad</h3>
+        <p>Prácticas y conocimientos para proteger dispositivos, redes y datos personales de ataques, fraudes o robos en el entorno digital. No es solo un tema técnico: es una competencia cotidiana de autoprotección.</p>
+      </article>
+
+      <article class="card">
+        <h3>Alfabetización vs. Literacidad: ¿cuál es la diferencia?</h3>
+        <div class="concept-compare">
+          <div class="compare-block a">
+            <strong>📱 Alfabetización</strong>
+            <p>Proceso de aprendizaje del uso de herramientas digitales a lo largo de la vida. Solo un 17% de adultos mayores en Chile puede hacer trámites digitales sin asistencia.</p>
+          </div>
+          <div class="compare-block b">
+            <strong>🔍 Literacidad</strong>
+            <p>Uso crítico y contextual de la lectura digital para un propósito social. Permite distinguir lo verdadero de lo falso. Solo el 47,3% del segmento 65–74 años tiene habilidades básicas.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════ PAGE 2: PROBLEMAS ════ -->
+    <section class="page" id="page-2" aria-labelledby="h2-problemas" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Riesgos y amenazas</p>
+        <h2 id="h2-problemas">Principales problemas</h2>
+        <p>Los adultos mayores son uno de los grupos más expuestos a fraudes y exclusión digital en Chile.</p>
+      </header>
+
+      <article class="card">
+        <span class="badge red">Riesgo alto</span>
+        <h3>Fraudes digitales</h3>
+        <p>Estafas por correo, mensajes o llamadas que suplantan bancos, el Estado o familiares para obtener claves o dinero. Según el estudio Senior Tech 2024 (ClaroVTR + Criteria), cerca de un tercio de los adultos mayores ha sido víctima de fraude digital. Es la amenaza más frecuente.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge red">Riesgo alto</span>
+        <h3>Robo de información personal</h3>
+        <p>Acceso no autorizado a datos personales, contraseñas o documentos almacenados en el celular o computador. Puede ocurrir mediante enlaces maliciosos, aplicaciones falsas o redes Wi-Fi inseguras.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge red">Riesgo sistémico</span>
+        <h3>Exclusión digital</h3>
+        <p>Imposibilidad de acceder a servicios esenciales que se han migrado al mundo digital: salud en línea, pensiones, pagos de cuentas, ClaveÚnica y trámites del Estado. La exclusión digital amplifica la desigualdad social.</p>
+      </article>
+
+      <article class="card">
+        <h3>⚠️ Señales de alerta más comunes</h3>
+        <ul class="signal-list" style="margin-top:.65rem" role="list">
+          <li>Mensajes que piden actuar "de urgencia" o con fecha límite</li>
+          <li>Premios o sorteos en los que nunca se participó</li>
+          <li>Links desconocidos recibidos por WhatsApp o correo</li>
+          <li>Llamadas solicitando claves o datos bancarios</li>
+          <li>Aplicaciones que piden demasiados permisos al instalarse</li>
+          <li>Correos con errores ortográficos o direcciones sospechosas</li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ════ PAGE 3: FACTORES ════ -->
+    <section class="page" id="page-3" aria-labelledby="h2-factores" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Análisis de impacto</p>
+        <h2 id="h2-factores">Factores de inclusión digital</h2>
+        <p>Nivel de influencia estimado según literatura académica revisada. Mayor barra = mayor impacto.</p>
+      </header>
+
+      <article class="factor">
+        <div class="factor-head">
+          <div class="factor-icon-wrap" aria-hidden="true">💰</div>
+          <div class="factor-meta">
+            <strong>Nivel socioeconómico</strong>
+            <span>Determina el acceso a dispositivos y conexión a internet</span>
+          </div>
+          <span class="factor-pct" aria-label="85 por ciento">85%</span>
+        </div>
+        <div class="bar-track" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" aria-label="Impacto del nivel socioeconómico: 85%">
+          <div class="bar-fill" data-w="85"></div>
+        </div>
+      </article>
+
+      <article class="factor">
+        <div class="factor-head">
+          <div class="factor-icon-wrap" aria-hidden="true">👨‍👩‍👧</div>
+          <div class="factor-meta">
+            <strong>Red de apoyo familiar</strong>
+            <span>Hijos o cercanos que acompañen el proceso de aprendizaje</span>
+          </div>
+          <span class="factor-pct" aria-label="78 por ciento">78%</span>
+        </div>
+        <div class="bar-track" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="Impacto de la red familiar: 78%">
+          <div class="bar-fill" data-w="78"></div>
+        </div>
+      </article>
+
+      <article class="factor">
+        <div class="factor-head">
+          <div class="factor-icon-wrap" aria-hidden="true">🎓</div>
+          <div class="factor-meta">
+            <strong>Nivel educacional</strong>
+            <span>Mayor escolaridad facilita el aprendizaje de herramientas digitales</span>
+          </div>
+          <span class="factor-pct" aria-label="72 por ciento">72%</span>
+        </div>
+        <div class="bar-track" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Impacto del nivel educacional: 72%">
+          <div class="bar-fill" data-w="72"></div>
+        </div>
+      </article>
+
+      <article class="factor">
+        <div class="factor-head">
+          <div class="factor-icon-wrap" aria-hidden="true">📍</div>
+          <div class="factor-meta">
+            <strong>Ubicación geográfica</strong>
+            <span>Zonas rurales enfrentan menor conectividad y cobertura</span>
+          </div>
+          <span class="factor-pct" aria-label="60 por ciento">60%</span>
+        </div>
+        <div class="bar-track" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" aria-label="Impacto de la ubicación geográfica: 60%">
+          <div class="bar-fill" data-w="60"></div>
+        </div>
+      </article>
+
+      <article class="factor">
+        <div class="factor-head">
+          <div class="factor-icon-wrap" aria-hidden="true">⏱️</div>
+          <div class="factor-meta">
+            <strong>Experiencia previa con tecnología</strong>
+            <span>Haber usado computadores o celulares antes facilita la adaptación</span>
+          </div>
+          <span class="factor-pct" aria-label="55 por ciento">55%</span>
+        </div>
+        <div class="bar-track" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100" aria-label="Impacto de la experiencia previa: 55%">
+          <div class="bar-fill" data-w="55"></div>
+        </div>
+      </article>
+
+      <article class="card" style="margin-top:.9rem">
+        <h3>¿Qué nos dicen estos factores?</h3>
+        <p>La brecha digital no es simplemente un problema de edad: está profundamente condicionada por el nivel socioeconómico y el acceso a redes de apoyo. Una política pública efectiva debe actuar en múltiples frentes simultáneamente, no solo en la provisión de dispositivos.</p>
+      </article>
+    </section>
+
+    <!-- ════ PAGE 4: CONSEJOS ════ -->
+    <section class="page" id="page-4" aria-labelledby="h2-consejos" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Guía práctica</p>
+        <h2 id="h2-consejos">Consejos de ciberseguridad</h2>
+        <p>Acciones concretas que cualquier persona puede aplicar hoy para navegar internet de forma más segura.</p>
+      </header>
+
+      <article class="tip-card">
+        <div class="tip-icon-wrap" aria-hidden="true">🔑</div>
+        <div class="tip-body">
+          <strong>Usa contraseñas seguras y únicas</strong>
+          <p>Combina letras mayúsculas, minúsculas, números y símbolos. No uses la misma clave en varios sitios y nunca la compartas con nadie. Una frase larga y personal es fácil de recordar y difícil de adivinar.</p>
+        </div>
+      </article>
+
+      <article class="tip-card">
+        <div class="tip-icon-wrap" aria-hidden="true">📧</div>
+        <div class="tip-body">
+          <strong>Desconfía de correos y mensajes de urgencia</strong>
+          <p>Los bancos y el Estado nunca piden contraseñas por correo o WhatsApp. Si un mensaje te presiona a actuar rápido o te ofrece algo demasiado bueno, es una señal de alerta. No hagas clic en links desconocidos.</p>
+        </div>
+      </article>
+
+      <article class="tip-card">
+        <div class="tip-icon-wrap" aria-hidden="true">🔄</div>
+        <div class="tip-body">
+          <strong>Actualiza tus dispositivos regularmente</strong>
+          <p>Las actualizaciones del sistema operativo y las aplicaciones corrigen errores de seguridad. Activa las actualizaciones automáticas para no tener que recordarlo manualmente.</p>
+        </div>
+      </article>
+
+      <article class="tip-card">
+        <div class="tip-icon-wrap" aria-hidden="true">📶</div>
+        <div class="tip-body">
+          <strong>Evita el Wi-Fi público para trámites importantes</strong>
+          <p>En redes de cafeterías, plazas o aeropuertos tu información puede ser interceptada. No ingreses contraseñas ni realices operaciones bancarias en estas redes: usa solo tu red móvil o Wi-Fi doméstico.</p>
+        </div>
+      </article>
+
+      <article class="tip-card">
+        <div class="tip-icon-wrap" aria-hidden="true">📞</div>
+        <div class="tip-body">
+          <strong>Verifica siempre antes de actuar</strong>
+          <p>Si alguien te pide datos, dinero o acceso a tu cuenta con urgencia, cuelga y llama tú directamente al número oficial de la institución. Búscalo en su página web, no en el mensaje recibido.</p>
+        </div>
+      </article>
+
+      <article class="tip-card">
+        <div class="tip-icon-wrap" aria-hidden="true">💾</div>
+        <div class="tip-body">
+          <strong>Haz copias de seguridad de tus datos</strong>
+          <p>Guarda copias de fotos, documentos y contactos importantes en una memoria USB o servicio en la nube. Así, si tu dispositivo es robado o falla, no perderás tu información.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ════ PAGE 5: QUIZ ════ -->
+    <section class="page" id="page-5" aria-labelledby="h2-quiz" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Actividad de aprendizaje</p>
+        <h2 id="h2-quiz">Evalúa tu conocimiento</h2>
+        <p>6 preguntas sobre ciberseguridad e inclusión digital. ¿Cuántas puedes responder correctamente?</p>
+      </header>
+      <div class="quiz-wrap" id="quiz" aria-live="polite"></div>
+    </section>
+
+    <!-- ════ PAGE 6: ¿QUÉ APRENDISTE? ════ -->
+    <section class="page" id="page-6" aria-labelledby="h2-learned" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Reflexión personal</p>
+        <h2 id="h2-learned">¿Qué aprendiste hoy?</h2>
+        <p>Marca los conceptos que ya dominás. Tu progreso se guarda mientras estés en esta página.</p>
+      </header>
+
+      <div class="learned-grid" id="learnedGrid" role="group" aria-label="Lista de aprendizajes"></div>
+
+      <div class="learned-summary" aria-live="polite" aria-label="Resumen de progreso">
+        <svg class="progress-ring" viewBox="0 0 52 52" aria-hidden="true">
+          <circle cx="26" cy="26" r="22" fill="none" stroke="var(--border)" stroke-width="4"/>
+          <circle id="ring-fill" cx="26" cy="26" r="22" fill="none" stroke="var(--gold)" stroke-width="4"
+            stroke-dasharray="138.2" stroke-dashoffset="138.2" stroke-linecap="round"
+            transform="rotate(-90 26 26)" style="transition:stroke-dashoffset .5s ease"/>
+        </svg>
+        <div>
+          <div style="display:flex;align-items:baseline;gap:.35rem">
+            <span class="learned-count" id="learnedCount">0</span>
+            <span style="font-size:.85rem;color:var(--muted)" id="learnedTotal">/ 8 conceptos</span>
+          </div>
+          <p id="learnedMsg">Marca los conceptos que ya comprendes para ver tu progreso.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ PAGE 7: BIBLIOGRAFÍA ════ -->
+    <section class="page" id="page-7" aria-labelledby="h2-bib" tabindex="-1">
+      <header class="page-header">
+        <p class="eyebrow">Fuentes y referencias</p>
+        <h2 id="h2-bib">Bibliografía</h2>
+        <p>Documentos y estudios utilizados para elaborar este recurso educativo.</p>
+      </header>
+
+      <div class="bib-section">
+        <p class="bib-section-title">📊 Estadísticas y contexto — "Contexto"</p>
+        <article class="bib-item">
+          <span class="bib-num">[1]</span>
+          <div class="bib-type-icon stat" aria-hidden="true">🏛️</div>
+          <div class="bib-content">
+            <p class="bib-title">Población mayor ¿Hacia la superación de la brecha digital?</p>
+            <p class="bib-meta">Observatorio del Envejecimiento UC–Confuturo · 2024 · Año 5, v30</p>
+            <div class="bib-tags"><span class="bib-tag tag-stat">Fuente principal</span><span class="bib-tag tag-year">2024</span></div>
+            <a class="bib-link" href="https://observatorioenvejecimiento.uc.cl/wp-content/uploads/2024/06/Poblacion-mayor-%C2%BFHacia-la-superacion-de-la-brecha-digital.pdf" target="_blank" rel="noopener noreferrer">observatorioenvejecimiento.uc.cl → PDF completo</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[2]</span>
+          <div class="bib-type-icon stat" aria-hidden="true">📈</div>
+          <div class="bib-content">
+            <p class="bib-title">Hogares Conectados: Un Camino Hacia la Inclusión Digital</p>
+            <p class="bib-meta">País Digital · 2024 · Estudio nacional con datos regionales e infografías por zona</p>
+            <div class="bib-tags"><span class="bib-tag tag-stat">Infografías</span><span class="bib-tag tag-year">2024</span></div>
+            <a class="bib-link" href="https://www.tabulado.net/pais-digital-y-una-radiografia-de-la-brecha-digital-en-chile-adultos-mayores-y-la-desconexion/" target="_blank" rel="noopener noreferrer">tabulado.net → resumen visual</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[3]</span>
+          <div class="bib-type-icon stat" aria-hidden="true">📰</div>
+          <div class="bib-content">
+            <p class="bib-title">Brecha digital en Chile: el desafío de incluir a los adultos mayores</p>
+            <p class="bib-meta">Portal Innova · Septiembre 2025 · Resumen periodístico del informe UC–Confuturo</p>
+            <div class="bib-tags"><span class="bib-tag tag-stat">Resumen</span><span class="bib-tag tag-year">2025</span></div>
+            <a class="bib-link" href="https://portalinnova.cl/brecha-digital-en-chile-el-desafio-de-incluir-a-los-adultos-mayores-en-la-era-tecnologica/" target="_blank" rel="noopener noreferrer">portalinnova.cl</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[4]</span>
+          <div class="bib-type-icon stat" aria-hidden="true">📱</div>
+          <div class="bib-content">
+            <p class="bib-title">Solo la mitad de los adultos mayores chilenos tiene un smartphone para comunicarse</p>
+            <p class="bib-meta">El Mostrador · Julio 2024 · Datos sobre conectividad y acceso a dispositivos</p>
+            <div class="bib-tags"><span class="bib-tag tag-stat">Dispositivos</span><span class="bib-tag tag-year">2024</span></div>
+            <a class="bib-link" href="https://www.elmostrador.cl/agenda-pais/agenda-digital/2024/07/04/solo-la-mitad-de-los-adultos-mayores-chilenos-tiene-un-smartphone-para-comunicarse/" target="_blank" rel="noopener noreferrer">elmostrador.cl</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="bib-section">
+        <p class="bib-section-title">🔐 Fraudes digitales — "Problemas" y "Quiz"</p>
+        <article class="bib-item">
+          <span class="bib-num">[5]</span>
+          <div class="bib-type-icon cyber" aria-hidden="true">⚠️</div>
+          <div class="bib-content">
+            <p class="bib-title">Radiografía Digital de Personas Mayores: Senior Tech 2024</p>
+            <p class="bib-meta">ClaroVTR + Criteria · Octubre 2024 · Estudio nacional sobre fraudes y hábitos digitales</p>
+            <div class="bib-tags"><span class="bib-tag tag-cyber">Fraudes</span><span class="bib-tag tag-year">2024</span></div>
+            <a class="bib-link" href="https://www.trendtic.cl/2024/10/cerca-de-un-tercio-de-las-personas-mayores-ha-sido-victima-de-fraude-por-internet-y-redes-sociales-en-2024/" target="_blank" rel="noopener noreferrer">trendtic.cl → estudio completo</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[6]</span>
+          <div class="bib-type-icon cyber" aria-hidden="true">📺</div>
+          <div class="bib-content">
+            <p class="bib-title">Ciberseguridad en adultos mayores: 29% ha sufrido fraudes digitales en 2024</p>
+            <p class="bib-meta">Chilevisión · Octubre 2024 · Nota breve y visual del estudio ClaroVTR</p>
+            <div class="bib-tags"><span class="bib-tag tag-cyber">Fraudes</span><span class="bib-tag tag-year">2024</span></div>
+            <a class="bib-link" href="https://www.chilevision.cl/noticias/tendencias/ciberseguridad-adultos-mayores-ha-sufrido-fraudes-digitales" target="_blank" rel="noopener noreferrer">chilevision.cl</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[7]</span>
+          <div class="bib-type-icon cyber" aria-hidden="true">🔓</div>
+          <div class="bib-content">
+            <p class="bib-title">Fraudes Digitales: Alerta por Aumento en Adultos Mayores 2025</p>
+            <p class="bib-meta">Cut Security · 2025 · Análisis de los tipos de fraude digital más frecuentes en Chile</p>
+            <div class="bib-tags"><span class="bib-tag tag-cyber">Análisis</span><span class="bib-tag tag-year">2025</span></div>
+            <a class="bib-link" href="https://cutsecurity.cl/blog/fraudes-digitales-adultos-mayores-2025/" target="_blank" rel="noopener noreferrer">cutsecurity.cl</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="bib-section">
+        <p class="bib-section-title">🎓 Programas y factores — "Factores"</p>
+        <article class="bib-item">
+          <span class="bib-num">[8]</span>
+          <div class="bib-type-icon prog" aria-hidden="true">🎓</div>
+          <div class="bib-content">
+            <p class="bib-title">Adultos mayores en Chile y la brecha digital: un desafío pendiente</p>
+            <p class="bib-meta">El Mostrador · Octubre 2024 · INE + factores socioeconómicos y nivel educacional</p>
+            <div class="bib-tags"><span class="bib-tag tag-prog">Factores</span><span class="bib-tag tag-year">2024</span></div>
+            <a class="bib-link" href="https://www.elmostrador.cl/agenda-pais/agenda-digital/2024/10/04/adultos-mayores-en-chile-y-la-brecha-digital-un-desafio-pendiente/" target="_blank" rel="noopener noreferrer">elmostrador.cl</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[9]</span>
+          <div class="bib-type-icon prog" aria-hidden="true">📍</div>
+          <div class="bib-content">
+            <p class="bib-title">Brecha digital Chile: adultos mayores quedan fuera de la modernización tecnológica</p>
+            <p class="bib-meta">El Diario de la Araucanía · Septiembre 2025 · Brecha rural y acceso a ClaveÚnica</p>
+            <div class="bib-tags"><span class="bib-tag tag-prog">Zona rural</span><span class="bib-tag tag-year">2025</span></div>
+            <a class="bib-link" href="https://www.eldiariodelaaraucania.cl/2025/09/23/brecha-digital-chile-adultos-mayores/" target="_blank" rel="noopener noreferrer">eldiariodelaaraucania.cl</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="bib-section">
+        <p class="bib-section-title">📋 Conceptos base — "Conceptos"</p>
+        <article class="bib-item">
+          <span class="bib-num">[10]</span>
+          <div class="bib-type-icon base" aria-hidden="true">📋</div>
+          <div class="bib-content">
+            <p class="bib-title">Encuesta CASEN 2017 — Uso de internet en adultos mayores</p>
+            <p class="bib-meta">Ministerio de Desarrollo Social · Chile · Datos base sobre alfabetización y trámites en línea</p>
+            <div class="bib-tags"><span class="bib-tag tag-base">Alfabetización</span><span class="bib-tag tag-year">2017</span></div>
+            <a class="bib-link" href="https://portalredsalud.cl/2024/10/01/la-brecha-digital-en-los-adultos-mayores-de-chile-actualizate-app-promueve-la-inclusion-tecnologica-en-el-mes-del-adulto-mayor/" target="_blank" rel="noopener noreferrer">citada en portalredsalud.cl</a>
+          </div>
+        </article>
+        <article class="bib-item">
+          <span class="bib-num">[11]</span>
+          <div class="bib-type-icon base" aria-hidden="true">🛡️</div>
+          <div class="bib-content">
+            <p class="bib-title">Ciberseguridad para adultos mayores: consejos sencillos para evitar fraudes digitales</p>
+            <p class="bib-meta">TrendTIC · Agosto 2025 · Conceptos de ciberseguridad y hábitos digitales seguros</p>
+            <div class="bib-tags"><span class="bib-tag tag-base">Consejos</span><span class="bib-tag tag-year">2025</span></div>
+            <a class="bib-link" href="https://www.trendtic.cl/2025/08/ciberseguridad-para-nuestros-adultos-mayores-consejos-sencillos-para-evitar-fraudes-digitales/" target="_blank" rel="noopener noreferrer">trendtic.cl</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     animations.js — reading progress + bar/stat anim
+     ══════════════════════════════════════════ -->
+<script>
+/* ── READING PROGRESS ── */
+(function initReadProgress() {
+  const bar = document.getElementById('read-progress');
+
+  function updateProgress() {
+    const activePage = document.querySelector('.page.active');
+    if (!activePage) return;
+    const rect    = activePage.getBoundingClientRect();
+    const total   = activePage.scrollHeight - window.innerHeight;
+    const scrolled = Math.max(0, -rect.top);
+    const pct     = total <= 0 ? 100 : Math.min(100, Math.round((scrolled / total) * 100));
+    bar.style.setProperty('--read-progress', pct + '%');
+    bar.style.width = pct + '%';
+    bar.setAttribute('aria-valuenow', pct);
+  }
+
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+})();
+
+/* ── STAT COUNTER ── */
+function animateStats() {
+  document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    let current  = 0;
+    const step   = Math.ceil(target / 28);
+    el.textContent = '0';
+    const iv = setInterval(() => {
+      current = Math.min(current + step, target);
+      el.textContent = current;
+      if (current >= target) clearInterval(iv);
+    }, 32);
+  });
+}
+
+/* ── BAR ANIMATION ── */
+function animateBars() {
+  document.querySelectorAll('.bar-fill[data-w]').forEach((bar, i) => {
+    setTimeout(() => { bar.style.width = bar.dataset.w + '%'; }, i * 60);
+  });
+}
+</script>
+
+<!-- ══════════════════════════════════════════
+     quiz.js
+     ══════════════════════════════════════════ -->
+<script>
+const QUESTIONS = [
+  {
+    q: "¿Qué porcentaje de adultos mayores en Chile realiza trámites digitales sin ayuda?",
+    opts: ["17%","42%","63%","80%"],
+    correct: 0,
+    feedback: "Solo el 17%. La gran mayoría necesita asistencia para realizar trámites en línea, lo que evidencia la profundidad de la brecha digital."
+  },
+  {
+    q: "¿Cuál es la diferencia principal entre alfabetización y literacidad digital?",
+    opts: ["Son exactamente lo mismo","Alfabetización es uso básico; literacidad implica análisis crítico","La literacidad es solo para jóvenes","La alfabetización incluye pensamiento crítico"],
+    correct: 1,
+    feedback: "La alfabetización cubre el uso técnico básico, mientras que la literacidad agrega la capacidad de analizar, evaluar y cuestionar la información en internet."
+  },
+  {
+    q: "¿Cuál es una señal de alerta típica de un fraude digital?",
+    opts: ["Un correo que exige actuar con urgencia","Una actualización del sistema operativo","Una llamada de un familiar conocido","Un mensaje de tu banco con tu nombre completo"],
+    correct: 0,
+    feedback: "Los mensajes de urgencia son la táctica más común. Los estafadores buscan que actúes sin pensar. Ante cualquier presión para actuar rápido, detente y verifica."
+  },
+  {
+    q: "¿Qué factor influye más en la inclusión digital de adultos mayores?",
+    opts: ["La edad exacta","El modelo del celular","El nivel socioeconómico","El clima de la región"],
+    correct: 2,
+    feedback: "El nivel socioeconómico (85%) determina el acceso a dispositivos y conexión. La brecha digital no es solo de edad: es también de desigualdad."
+  },
+  {
+    q: "¿Qué hacer si recibes un mensaje pidiendo tu clave bancaria?",
+    opts: ["Enviarla de inmediato para no perder la cuenta","Ignorarlo y llamar al banco al número oficial","Reenviarlo a un amigo para que opine","Responder pidiendo más información"],
+    correct: 1,
+    feedback: "Nunca entregues tu clave por mensajes. Llama siempre al número oficial de tu banco (el que aparece en tu tarjeta o sitio web oficial) para verificar."
+  },
+  {
+    q: "¿Por qué es importante actualizar el sistema operativo del celular?",
+    opts: ["Para que se vea más moderno","Para agregar nuevas canciones","Para corregir errores de seguridad","Para ahorrar batería"],
+    correct: 2,
+    feedback: "Las actualizaciones corrigen vulnerabilidades que podrían ser explotadas por atacantes para acceder a tu dispositivo o datos personales."
+  }
+];
+
+const LETTERS = ['A','B','C','D'];
+let qIdx = 0, quizScore = 0, answered = false;
+
+function renderQuiz() {
+  qIdx = 0; quizScore = 0; answered = false;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const container = document.getElementById('quiz');
+  if (qIdx >= QUESTIONS.length) { renderScore(container); return; }
+
+  const q   = QUESTIONS[qIdx];
+  const pct = Math.round((qIdx / QUESTIONS.length) * 100);
+
+  container.innerHTML = `
+    <div class="quiz-progress-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso del quiz: pregunta ${qIdx+1} de ${QUESTIONS.length}">
+      <div class="quiz-progress-fill" style="width:${pct}%"></div>
+    </div>
+    <p class="quiz-counter">Pregunta ${qIdx + 1} de ${QUESTIONS.length}</p>
+    <p class="quiz-q" id="quiz-question">${q.q}</p>
+    <div class="quiz-opts" role="group" aria-labelledby="quiz-question">
+      ${q.opts.map((opt, i) => `
+        <button class="opt-btn" data-idx="${i}" onclick="selectAnswer(${i})"
+          aria-label="Opción ${LETTERS[i]}: ${opt}">
+          <span class="opt-letter" aria-hidden="true">${LETTERS[i]}</span>
+          ${opt}
+        </button>
+      `).join('')}
+    </div>
+    <div class="quiz-feedback" id="qfb" role="status"></div>
+    <div class="quiz-nav">
+      <span style="font-size:.76rem;color:var(--muted)" aria-live="polite">
+        ✅ ${quizScore} correctas &nbsp;·&nbsp; ❌ ${qIdx - quizScore} incorrectas
+      </span>
+      <button class="btn-primary" id="nextBtn" onclick="nextQuestion()" disabled aria-label="${qIdx < QUESTIONS.length - 1 ? 'Siguiente pregunta' : 'Ver resultado'}">
+        ${qIdx < QUESTIONS.length - 1 ? 'Siguiente →' : 'Ver resultado →'}
+      </button>
+    </div>`;
+
+  answered = false;
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q    = QUESTIONS[qIdx];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => { b.disabled = true; b.setAttribute('aria-disabled', 'true'); });
+
+  const isCorrect = idx === q.correct;
+  btns[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) btns[q.correct].classList.add('correct');
+  if (isCorrect) quizScore++;
+
+  const fb = document.getElementById('qfb');
+  fb.className = 'quiz-feedback show ' + (isCorrect ? 'ok' : 'no');
+  fb.innerHTML = `<div class="fb-head">${isCorrect ? '✅ ¡Correcto!' : '❌ No exactamente'}</div>${q.feedback}`;
+  document.getElementById('nextBtn').disabled = false;
+}
+
+function nextQuestion() { qIdx++; renderQuestion(); }
+
+function renderScore(container) {
+  const pct = Math.round((quizScore / QUESTIONS.length) * 100);
+  const configs = [
+    { min: 6, msg: '¡Perfecto! Dominas el tema.',           stars: '★★★★★' },
+    { min: 4, msg: '¡Muy bien! Casi completo.',             stars: '★★★★☆' },
+    { min: 2, msg: 'Bien, pero conviene repasar.',          stars: '★★★☆☆' },
+    { min: 0, msg: 'Te recomendamos repasar los conceptos con calma.', stars: '★★☆☆☆' },
+  ];
+  const { msg, stars } = configs.find(c => quizScore >= c.min);
+
+  container.innerHTML = `
+    <div class="score-screen" role="status" aria-label="Resultado del quiz: ${quizScore} de ${QUESTIONS.length} correctas">
+      <div class="score-big" aria-hidden="true">${quizScore}<span style="font-size:1.8rem;color:var(--muted)">/${QUESTIONS.length}</span></div>
+      <p class="score-denom">${pct}% de respuestas correctas</p>
+      <div class="score-stars" aria-hidden="true">${stars}</div>
+      <p class="score-msg">${msg}</p>
+      <button class="btn-primary" onclick="renderQuiz()" style="margin-right:.5rem">🔄 Intentar de nuevo</button>
+      <button class="btn-ghost" onclick="showTab(0)">← Volver al inicio</button>
+    </div>`;
+}
+</script>
+
+<!-- ══════════════════════════════════════════
+     nav.js + dark-mode + search + learned
+     ══════════════════════════════════════════ -->
+<script>
+/* ── SEARCH INDEX ── */
+const SEARCH_INDEX = [
+  { tab:0, section:'Contexto', title:'Brecha digital en Chile', text:'La transformación digital genera oportunidades pero también barreras. Solo el 17% hace trámites sin ayuda. El 75% enfrenta barreras digitales.' },
+  { tab:0, section:'Contexto', title:'Solo la mitad tiene smartphone', text:'Menos de la mitad de los adultos mayores chilenos cuenta con un teléfono inteligente.' },
+  { tab:1, section:'Conceptos', title:'Inclusión digital', text:'Garantizar que todas las personas puedan acceder y usar las tecnologías digitales de forma efectiva.' },
+  { tab:1, section:'Conceptos', title:'Alfabetización digital', text:'Uso básico de dispositivos aplicaciones e internet. Primer paso para participar en el mundo digital.' },
+  { tab:1, section:'Conceptos', title:'Literacidad digital', text:'Capacidad para analizar evaluar y usar críticamente la información encontrada en internet. Detectar información falsa.' },
+  { tab:1, section:'Conceptos', title:'Ciberseguridad', text:'Prácticas y conocimientos para proteger dispositivos redes y datos personales de ataques fraudes o robos.' },
+  { tab:2, section:'Problemas', title:'Fraudes digitales', text:'Estafas por correo mensajes o llamadas que suplantan bancos el Estado o familiares. Un tercio fue víctima en 2024.' },
+  { tab:2, section:'Problemas', title:'Robo de información personal', text:'Acceso no autorizado a datos personales contraseñas o documentos. Ocurre por enlaces maliciosos o apps falsas.' },
+  { tab:2, section:'Problemas', title:'Exclusión digital', text:'Imposibilidad de acceder a salud pensiones pagos ClaveÚnica y trámites del Estado.' },
+  { tab:2, section:'Problemas', title:'Señales de alerta', text:'Mensajes de urgencia premios no participados links desconocidos llamadas pidiendo claves apps con demasiados permisos.' },
+  { tab:3, section:'Factores', title:'Nivel socioeconómico (85%)', text:'Determina el acceso a dispositivos y conexión a internet. Mayor factor de impacto.' },
+  { tab:3, section:'Factores', title:'Red de apoyo familiar (78%)', text:'Hijos o cercanos que acompañen el proceso de aprendizaje digital.' },
+  { tab:3, section:'Factores', title:'Nivel educacional (72%)', text:'Mayor escolaridad facilita el aprendizaje de herramientas digitales.' },
+  { tab:3, section:'Factores', title:'Ubicación geográfica (60%)', text:'Zonas rurales tienen menor conectividad y cobertura.' },
+  { tab:4, section:'Consejos', title:'Contraseñas seguras', text:'Combina letras números y símbolos. No uses la misma clave en varios sitios.' },
+  { tab:4, section:'Consejos', title:'Desconfía de mensajes de urgencia', text:'Los bancos nunca piden contraseñas por correo o WhatsApp. No hagas clic en links desconocidos.' },
+  { tab:4, section:'Consejos', title:'Actualiza tus dispositivos', text:'Las actualizaciones corrigen errores de seguridad. Activa actualizaciones automáticas.' },
+  { tab:4, section:'Consejos', title:'Evita Wi-Fi público', text:'No ingreses contraseñas ni hagas operaciones bancarias en redes de cafeterías o plazas.' },
+  { tab:4, section:'Consejos', title:'Verifica antes de actuar', text:'Si alguien pide datos o dinero con urgencia llama al número oficial de la institución.' },
+];
+
+/* ── SEARCH UI ── */
+(function initSearch() {
+  const input   = document.getElementById('globalSearch');
+  const results = document.getElementById('searchResults');
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (q.length < 2) { results.style.display = 'none'; return; }
+
+    const hits = SEARCH_INDEX.filter(item =>
+      item.title.toLowerCase().includes(q) || item.text.toLowerCase().includes(q)
+    ).slice(0, 7);
+
+    if (!hits.length) { results.style.display = 'none'; return; }
+
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+
+    results.innerHTML = hits.map(h => {
+      const snippet = h.text.length > 80 ? h.text.slice(0, 80) + '…' : h.text;
+      return `<div class="sr-item" role="option" tabindex="0" onclick="goSearch(${h.tab})" onkeydown="if(event.key==='Enter')goSearch(${h.tab})">
+        <span class="sr-section">${h.section}</span>
+        <span class="sr-title">${h.title.replace(re, '<mark>$1</mark>')}</span>
+        <span class="sr-snippet">${snippet.replace(re, '<mark>$1</mark>')}</span>
+      </div>`;
+    }).join('');
+
+    results.style.display = 'block';
+  });
+
+  document.addEventListener('click', e => {
+    if (!results.contains(e.target) && e.target !== input) results.style.display = 'none';
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { results.style.display = 'none'; input.blur(); }
+  });
+})();
+
+function goSearch(tabIdx) {
+  document.getElementById('globalSearch').value = '';
+  document.getElementById('searchResults').style.display = 'none';
+  showTab(tabIdx);
+}
+
+/* ── NAV ── */
+const allNavBtns = document.querySelectorAll('[data-tab]');
+const allPages   = document.querySelectorAll('.page');
+let currentTab   = 0;
+
+function showTab(n) {
+  currentTab = n;
+  allPages.forEach((p, i) => {
+    p.classList.toggle('active', i === n);
+  });
+  allNavBtns.forEach(b => {
+    const isActive = parseInt(b.dataset.tab) === n;
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-current', isActive ? 'page' : 'false');
+  });
+  // Focus the page heading for screen readers
+  const targetPage = document.getElementById(`page-${n}`);
+  if (targetPage) targetPage.focus({ preventScroll: true });
+
+  if (n === 3) animateBars();
+  if (n === 0) animateStats();
+  if (n === 5) renderQuiz();
+  if (n === 6) renderLearned();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+allNavBtns.forEach(btn => {
+  btn.addEventListener('click', () => showTab(parseInt(btn.dataset.tab)));
+});
+
+/* ── DARK MODE ── */
+(function initDark() {
+  const html   = document.documentElement;
+  const toggle = document.getElementById('darkToggle');
+  const mobile = document.getElementById('darkToggleMobile');
+
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = stored ? stored === 'dark' : prefersDark;
+
+  if (isDark) applyDark(true, false);
+
+  function applyDark(dark, save = true) {
+    html.dataset.theme = dark ? 'dark' : 'light';
+    toggle.setAttribute('aria-checked', dark ? 'true' : 'false');
+    toggle.setAttribute('aria-label', dark ? 'Desactivar modo oscuro' : 'Activar modo oscuro');
+    if (mobile) {
+      mobile.textContent = dark ? '☀️' : '🌙';
+      mobile.setAttribute('aria-checked', dark ? 'true' : 'false');
+    }
+    if (save) localStorage.setItem('theme', dark ? 'dark' : 'light');
+  }
+
+  function toggleDark() { applyDark(html.dataset.theme !== 'dark'); }
+
+  toggle.addEventListener('click', toggleDark);
+  if (mobile) mobile.addEventListener('click', toggleDark);
+})();
+
+/* ── LEARNED ── */
+const LEARNED_ITEMS = [
+  { id:'l1', title:'Inclusión digital',       desc:'Todas las personas deben poder acceder y usar tecnología.' },
+  { id:'l2', title:'Alfabetización digital',  desc:'Uso básico de dispositivos e internet.' },
+  { id:'l3', title:'Literacidad digital',      desc:'Lectura y evaluación crítica de la información.' },
+  { id:'l4', title:'Ciberseguridad',           desc:'Protección de datos y dispositivos en internet.' },
+  { id:'l5', title:'Fraudes digitales',        desc:'Estafas que suplantan bancos, Estado o familiares.' },
+  { id:'l6', title:'Señales de alerta',        desc:'Urgencia, premios falsos, links y llamadas sospechosas.' },
+  { id:'l7', title:'Factores de inclusión',    desc:'NSE, familia, educación, ubicación y experiencia previa.' },
+  { id:'l8', title:'Consejos de protección',   desc:'Contraseñas, actualizaciones, Wi-Fi seguro y verificación.' },
+];
+
+let learnedState = {};
+
+function renderLearned() {
+  const grid = document.getElementById('learnedGrid');
+  grid.innerHTML = LEARNED_ITEMS.map(item => `
+    <label class="learned-card${learnedState[item.id] ? ' checked' : ''}"
+      for="${item.id}" aria-label="${item.title}: ${learnedState[item.id] ? 'aprendido' : 'pendiente'}">
+      <input type="checkbox" id="${item.id}"
+        ${learnedState[item.id] ? 'checked' : ''}
+        onchange="toggleLearned('${item.id}', this.checked)"
+        aria-label="${item.title}">
+      <div class="learned-check" aria-hidden="true">${learnedState[item.id] ? '✓' : ''}</div>
+      <div class="learned-text">
+        <strong>${item.title}</strong>
+        <span>${item.desc}</span>
+      </div>
+    </label>
+  `).join('');
+  updateLearnedSummary();
+}
+
+function toggleLearned(id, checked) {
+  learnedState[id] = checked;
+  // Re-render to sync styles
+  renderLearned();
+}
+
+function updateLearnedSummary() {
+  const count   = Object.values(learnedState).filter(Boolean).length;
+  const total   = LEARNED_ITEMS.length;
+  const pct     = total === 0 ? 0 : count / total;
+  const circ    = 138.2;
+
+  document.getElementById('learnedCount').textContent = count;
+  document.getElementById('learnedTotal').textContent = `/ ${total} conceptos`;
+
+  const ring = document.getElementById('ring-fill');
+  ring.style.strokeDashoffset = circ - (circ * pct);
+
+  const msgs = [
+    { min: total, txt: '🎉 ¡Lo lograste! Dominás todos los conceptos del módulo.' },
+    { min: 6,     txt: '💪 Excelente avance. Ya casi los tenés todos.' },
+    { min: 3,     txt: '📚 Buen progreso. Seguí revisando los que faltan.' },
+    { min: 1,     txt: '👋 Buen comienzo. Marcá los conceptos que ya comprendes.' },
+    { min: 0,     txt: 'Marca los conceptos que ya comprendes para ver tu progreso.' },
+  ];
+
+  document.getElementById('learnedMsg').innerHTML =
+    '<strong>' + (msgs.find(m => count >= m.min)?.txt ?? '') + '</strong>';
+}
+
+/* ── INIT ── */
+animateStats();
+</script>
+</body>
+</html>
